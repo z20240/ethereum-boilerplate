@@ -1,5 +1,9 @@
-import NextAuth from 'next-auth';
+import NextAuth, { User } from 'next-auth';
 import { MoralisNextAuthProvider } from '@moralisweb3/next';
+
+interface AdapterUser extends User {
+  address: string;
+}
 
 export default NextAuth({
   providers: [MoralisNextAuthProvider()],
@@ -7,7 +11,7 @@ export default NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.user = user;
-        token.user.address = '0x2ff895e051f7A1c29c2D3bdAB35C4960E3E1ec72';
+        (token.user as AdapterUser).address = '0x2ff895e051f7A1c29c2D3bdAB35C4960E3E1ec72';
       }
       return token;
     },
