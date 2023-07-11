@@ -37,6 +37,9 @@ import {
   ArcElement,
   Filler,
 } from 'chart.js';
+import 'tailwindcss/tailwind.css';
+
+import { buttonTheme } from 'theme/components/Button';
 
 ChartJS.register(
   CategoryScale,
@@ -49,9 +52,8 @@ ChartJS.register(
   Filler,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
-
 
 const { provider, webSocketProvider } = configureChains(
   [
@@ -86,7 +88,12 @@ const config = {
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  components: {
+    Button: buttonTheme,
+  },
+});
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

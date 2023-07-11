@@ -1,3 +1,4 @@
+/* eslint-disable etc/no-commented-out-code */
 import {
   TableContainer,
   Table,
@@ -13,7 +14,8 @@ import {
   Box,
 } from '@chakra-ui/react';
 import { useEvmWalletTransactions } from '@moralisweb3/next';
-import { useSession } from 'next-auth/react';
+import { Input, Button, Grid, GridItem, Image, Wrap, WrapItem, HStack, Tag, Text } from '@chakra-ui/react';
+// import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { getEllipsisTxt } from 'utils/format';
 import { useNetwork } from 'wagmi';
@@ -21,14 +23,19 @@ import { Bar, Line, Radar, Doughnut } from 'react-chartjs-2';
 
 const Transactions = () => {
   const hoverTrColor = useColorModeValue('gray.100', 'gray.700');
-  const { data } = useSession();
   const { chain } = useNetwork();
+
   const { data: transactions } = useEvmWalletTransactions({
-    address: data?.user?.address,
+    address: '0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782',
+    // address: data?.user?.address,
     chain: chain?.id,
   });
 
   useEffect(() => console.log('transactions: ', transactions), [transactions]);
+
+  const handleSearchClick = async () => {
+    console.log('🚀 ~ file: Transactions.tsx:44 ~ handleSearchClick ~ owners:', transactions);
+  };
 
   return (
     <>
@@ -36,7 +43,96 @@ const Transactions = () => {
         Transactions
       </Heading>
 
-      {/* shar */}
+      <Box display="flex" flexDirection="row" alignItems="center" my="8">
+        <div className="relative flex flex-row w-full mx-auto">
+          <Input p="6" rounded="full" placeholder="-- Paste the wallet address here -- " />
+          <Button
+            right="0"
+            position="absolute"
+            colorScheme="purple"
+            bg="#6235D0"
+            rounded="full"
+            color="#fff"
+            fontSize="xs"
+            fontWeight="bold"
+            p="6"
+            px="12"
+            zIndex={40}
+            onClick={handleSearchClick}
+          >
+            Try Now
+          </Button>
+        </div>
+        <Text color="#fff" mx="4">
+          |
+        </Text>
+        <div className="flex justify-center my-4">
+          <Button colorScheme="gray" bg="white" rounded="full" color="#000" fontWeight="bold" fontSize="xs">
+            Uploading list of users
+          </Button>
+        </div>
+      </Box>
+
+      {/* NOTE: 大頭貼 */}
+      <div className="hidden">
+        <Grid templateColumns="repeat(4, 1fr)" gap={1} my="12">
+          <GridItem colSpan={3} h="24">
+            <Grid
+              templateAreas={`
+                  "nav main"
+                  "nav footer"`}
+              gridTemplateRows={'50px 1fr 30px'}
+              gridTemplateColumns={'150px 1fr'}
+              h="24"
+              gap="1"
+              color="blackAlpha.700"
+              fontWeight="bold"
+            >
+              <GridItem pl="2" area={'nav'}>
+                <Wrap>
+                  <WrapItem>
+                    <Image boxSize="100px" objectFit="cover" rounded="md" src="https://bit.ly/dan-abramov" />
+                  </WrapItem>
+                </Wrap>
+              </GridItem>
+              <GridItem area={'main'}>
+                <Text fontSize="2xl" color="#fff">
+                  Powerfund
+                </Text>
+              </GridItem>
+              <GridItem area={'footer'}>
+                <HStack spacing={4}>
+                  {['sm', 'md', 'lg'].map((size) => (
+                    <Tag size="md" key={size} variant="outline" colorScheme="green" borderRadius="full">
+                      {size}
+                    </Tag>
+                  ))}
+                </HStack>
+              </GridItem>
+            </Grid>
+          </GridItem>
+          <GridItem colSpan={1} h="24">
+            <Doughnut
+              data={{
+                labels: ['Jan'],
+                datasets: [
+                  {
+                    label: 'Transactions',
+                    data: [25],
+                    backgroundColor: ['#CF9A41'],
+                    borderWidth: 2,
+                  },
+                ],
+              }}
+              options={{
+                rotation: -90,
+                circumference: 180,
+                cutout: '90%',
+              }}
+            />
+          </GridItem>
+        </Grid>
+      </div>
 
       <div>
         <SimpleGrid columns={2} spacing={4}>
