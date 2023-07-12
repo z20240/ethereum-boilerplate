@@ -7,7 +7,6 @@ import {
   Grid,
   GridItem,
   Image,
-  HStack,
   Tag,
   Text,
   Card,
@@ -74,11 +73,11 @@ const Transactions = () => {
 
   return (
     <>
-      <Heading size="lg" marginBottom={6}>
+      {/* <Heading size="lg" marginBottom={6}>
         Transactions
-      </Heading>
+      </Heading> */}
 
-      <Box display="flex" flexDirection="row" alignItems="center" my="8">
+      <Box display="flex" flexDirection="row" alignItems="center">
         <div className="relative flex flex-row w-full mx-auto">
           <Input p="6" rounded="full" placeholder="-- Paste the wallet address here -- " />
           <Button

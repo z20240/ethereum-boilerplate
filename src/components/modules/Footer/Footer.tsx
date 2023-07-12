@@ -1,16 +1,20 @@
-import { Box, Link, Text } from '@chakra-ui/react';
-import { ExternalLinkIcon } from '@chakra-ui/icons';
+/* eslint-disable etc/no-commented-out-code */
+import {
+  Box,
+  // Link, Text
+} from '@chakra-ui/react';
+// import { ExternalLinkIcon } from '@chakra-ui/icons';
 
-const links = {
-  github: 'https://github.com/ethereum-boilerplate/ethereum-boilerplate/',
-  forum: 'https://forum.moralis.io/',
-  moralis: 'https://moralis.io/?utm_source=boilerplatehosted&utm_medium=todo&utm_campaign=ethereum-boilerplate',
-};
+// const links = {
+//   github: 'https://github.com/ethereum-boilerplate/ethereum-boilerplate/',
+//   forum: 'https://forum.moralis.io/',
+//   moralis: 'https://moralis.io/?utm_source=boilerplatehosted&utm_medium=todo&utm_campaign=ethereum-boilerplate',
+// };
 
 const Footer = () => {
   return (
     <Box textAlign={'center'} w="full" p={6}>
-      <Text>
+      {/* <Text>
         ⭐️ Please star this{' '}
         <Link href={links.github} isExternal alignItems={'center'}>
           boilerplate <ExternalLinkIcon />
@@ -28,7 +32,7 @@ const Footer = () => {
         <Link href={links.moralis} isExternal alignItems={'center'}>
           Moralis <ExternalLinkIcon />
         </Link>
-      </Text>
+      </Text> */}
     </Box>
   );
 };

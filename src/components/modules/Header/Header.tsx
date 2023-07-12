@@ -1,5 +1,9 @@
 import { Box, Container, Flex, HStack } from '@chakra-ui/react';
-import { ColorModeButton, MoralisLogo, NavBar } from 'components/elements';
+import {
+  // ColorModeButton,
+  MoralisLogo,
+  NavBar,
+} from 'components/elements';
 import { ConnectButton } from '../ConnectButton';
 
 const Header = () => {
@@ -11,7 +15,7 @@ const Header = () => {
           <NavBar />
           <HStack gap={'10px'}>
             <ConnectButton />
-            <ColorModeButton />
+            {/* <ColorModeButton /> */}
           </HStack>
         </Flex>
       </Container>
