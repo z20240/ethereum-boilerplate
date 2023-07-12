@@ -8,7 +8,7 @@ const MoralisLogo = () => {
     <Image
       src={colorMode === 'dark' ? '/Bluewahle-logo.png' : '/Bluewahle-logo.png'}
       height={45}
-      width={150}
+      width={120}
       alt="Moralis"
     />
   );
