@@ -11,40 +11,82 @@ import {
   useColorModeValue,
   SimpleGrid,
   Box,
+  Heading,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { useDropzone } from 'react-dropzone';
 import { useEvmWalletTransactions } from '@moralisweb3/next';
-import { Input, Button, Grid, GridItem, Image, Wrap, WrapItem, HStack, Tag, Text } from '@chakra-ui/react';
+import { Input, Button, Grid, GridItem, Wrap, WrapItem, Tag, Text } from '@chakra-ui/react';
 // import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { getEllipsisTxt } from 'utils/format';
 import { useNetwork } from 'wagmi';
 import { Bar, Line, Radar, Doughnut } from 'react-chartjs-2';
+import { toUpper } from 'ramda';
 
 const Home = () => {
   const hoverTrColor = useColorModeValue('gray.100', 'gray.700');
   const { chain } = useNetwork();
 
-  const { data: transactions } = useEvmWalletTransactions({
+  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const [address, setAddress] = useState('');
+  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
+  // const [transactions, setTransactions] = useState([]);
+  const [wallet, setWallet] = useState({
     address: '0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782',
+    color: randomColor,
+    tags: [],
+    transactions: [],
+  });
+
+  const { data } = useEvmWalletTransactions({
+    address: wallet.address,
+    // address: '0xd4e4078ca3495DE5B1d4dB434BEbc5a986197782',
     // address: data?.user?.address,
     chain: chain?.id,
   });
 
-  useEffect(() => console.log('transactions: ', transactions), [transactions]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // useEffect(() => console.log('transactions: ', transactions), [transactions]);
+
+  // @ts-ignore
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+  };
 
   const handleSearchClick = async () => {
-    console.log('🚀 ~ file: Transactions.tsx:44 ~ handleSearchClick ~ owners:', transactions);
+    if (!wallet || !address) {
+      return;
+    }
+
+    // @ts-ignore
+    setWallet({ ...wallet, address, color: Math.floor(Math.random() * 16777215).toString(16), transactions: data });
+
+    console.log('🚀 ~ file: Transactions.tsx:44 ~ handleSearchClick ~ wallet:', wallet);
   };
+
+  const labels = ['stable coin holder', 'erc-20 flipper', 'Early adopter', 'liquidity Farmer'];
 
   return (
     <>
-      {/* <Heading size="lg" marginBottom={6}>
-        Transactions
-      </Heading> */}
-
       <Box display="flex" flexDirection="row" alignItems="center">
         <div className="relative flex flex-row w-full mx-auto">
-          <Input p="6" rounded="full" placeholder="-- Paste the wallet address here -- " />
+          <Input
+            p="6"
+            rounded="full"
+            placeholder="-- Paste the wallet address here -- "
+            value={address}
+            onChange={handleAddressChange}
+          />
           <Button
             right="0"
             position="absolute"
@@ -58,6 +100,7 @@ const Home = () => {
             px="12"
             zIndex={40}
             onClick={handleSearchClick}
+            disabled={address.length === 0}
           >
             Try Now
           </Button>
@@ -66,7 +109,15 @@ const Home = () => {
           |
         </Text>
         <div className="flex justify-center my-4">
-          <Button colorScheme="gray" bg="white" rounded="full" color="#000" fontWeight="bold" fontSize="xs">
+          <Button
+            colorScheme="gray"
+            bg="white"
+            rounded="full"
+            color="#000"
+            fontWeight="bold"
+            fontSize="xs"
+            onClick={onOpen}
+          >
             Uploading list of users
           </Button>
         </div>
@@ -74,8 +125,8 @@ const Home = () => {
 
       {/* NOTE: 大頭貼 */}
       <div>
-        <Grid templateColumns="repeat(4, 1fr)" gap={1} my="12">
-          <GridItem colSpan={3} h="24">
+        <Grid templateColumns="repeat(12, 1fr)" gap={1} my="12">
+          <GridItem colSpan={10} h="24">
             <Grid
               templateAreas={`
                   "nav main"
@@ -90,23 +141,45 @@ const Home = () => {
               <GridItem pl="2" area={'nav'}>
                 <Wrap>
                   <WrapItem>
-                    <Image boxSize="100px" objectFit="cover" rounded="md" src="https://bit.ly/dan-abramov" />
+                    <Box
+                      boxSize="100px"
+                      objectFit="cover"
+                      rounded="md"
+                      backgroundColor={`#${wallet.color}`}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Text>{wallet.address.slice(2, 8)}</Text>
+                    </Box>
                   </WrapItem>
                 </Wrap>
               </GridItem>
               <GridItem area={'main'}>
                 <Text fontSize="2xl" color="#fff">
-                  Powerfund
+                  {wallet.address}
                 </Text>
               </GridItem>
               <GridItem area={'footer'}>
-                <HStack spacing={4}>
-                  {['sm', 'md', 'lg'].map((size) => (
-                    <Tag size="md" key={size} variant="outline" colorScheme="green" borderRadius="full">
-                      {size}
+                <Box display="flex" flexDirection="row">
+                  {labels.map((size) => (
+                    <Tag
+                      size="sm"
+                      key={size}
+                      variant="outline"
+                      color="#fff"
+                      borderRadius="full"
+                      border="1px solid #82FCD3"
+                      display="inline-block"
+                      fontWeight="bold"
+                      px="4"
+                      py="1"
+                      mr="2"
+                    >
+                      {toUpper(size)}
                     </Tag>
                   ))}
-                </HStack>
+                </Box>
               </GridItem>
             </Grid>
           </GridItem>
@@ -235,7 +308,7 @@ const Home = () => {
             />
           </Box>
         </SimpleGrid>
-        {transactions?.length ? (
+        {wallet.transactions?.length ? (
           <Box border="2px" borderColor={hoverTrColor} borderRadius="xl" padding="24px 18px">
             <TableContainer w={'full'}>
               <Table>
@@ -250,7 +323,7 @@ const Home = () => {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {transactions?.map((tx, key) => (
+                  {wallet.transactions?.map((tx, key) => (
                     <Tr key={key} _hover={{ bgColor: hoverTrColor }} cursor="pointer">
                       <Td>{getEllipsisTxt(tx?.hash)}</Td>
                       <Td>{getEllipsisTxt(tx?.from.checksum)}</Td>
@@ -278,6 +351,62 @@ const Home = () => {
           <Box>Looks Like you do not have any transactions</Box>
         )}
       </div>
+      <Box>
+        <Heading size="lg" marginBottom={6}>
+          NFTs
+        </Heading>
+      </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent backgroundColor="#000" border="1px solid #82FCD3" rounded="2xl">
+          <ModalHeader fontWeight="bold">Import Users</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontSize="sm">Import from a CSV file</Text>
+            <Box>
+              <div
+                {...getRootProps({
+                  className:
+                    'dropzone flex justify-center items-center h-[140px] border border-2 border-dashed my-6 rounded-md cursor-pointer',
+                })}
+              >
+                <input {...getInputProps()} />
+                <p>
+                  <span>Drop .csv file here or click to upload</span>
+                </p>
+              </div>
+            </Box>
+            <Box display="flex" justifyContent="center">
+              <Button
+                right="0"
+                colorScheme="purple"
+                bg="#6235D0"
+                rounded="full"
+                color="#fff"
+                fontSize="xs"
+                fontWeight="bold"
+                p="1"
+                px="12"
+                zIndex={40}
+              >
+                Import Users
+              </Button>
+            </Box>
+            <Box display="flex" justifyContent="center" my="4">
+              <Text fontSize="sm" textDecoration="underline" mb="6" color="#82FCD3">
+                Download the CSV template
+              </Text>
+            </Box>
+          </ModalBody>
+
+          {/* <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button variant="ghost">Secondary Action</Button>
+          </ModalFooter> */}
+        </ModalContent>
+      </Modal>
     </>
   );
 };

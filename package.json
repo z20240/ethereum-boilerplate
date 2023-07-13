@@ -19,6 +19,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@moralisweb3/next": "^2.14.1",
+    "@types/ramda": "^0.29.3",
     "@web3uikit/core": "^0.1.5",
     "@web3uikit/icons": "^0.4.1",
     "chart.js": "^4.3.0",
@@ -28,9 +29,12 @@
     "moralis": "^2.18.4",
     "next": "^13.3.1",
     "next-auth": "^4.20.1",
+    "ramda": "^0.29.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-dropzone-component": "^3.2.0",
     "wagmi": "^0.9.2"
   },
   "devDependencies": {
