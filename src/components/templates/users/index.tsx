@@ -137,7 +137,7 @@ const Transactions = () => {
 
       <Grid templateColumns="repeat(4, 1fr)" gap={1}>
         <GridItem colSpan={3} h="12">
-          <Text fontSize="xl">{`226 Users`}</Text>
+          <Text fontSize="xl">{`${usersData.length} Users`}</Text>
         </GridItem>
       </Grid>
 
