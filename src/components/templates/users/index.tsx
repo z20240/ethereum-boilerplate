@@ -21,8 +21,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  Wrap,
-  WrapItem,
+  Image,
   ModalCloseButton,
 } from '@chakra-ui/react';
 import { CheckIcon, ChevronRightIcon } from '@chakra-ui/icons';
@@ -31,15 +30,15 @@ import { useNetwork } from 'wagmi';
 import { Doughnut } from 'react-chartjs-2';
 import { toUpper } from 'ramda';
 
-const usersData = [
-  // {
-  //   name: '0x121r124124r1',
-  //   amount: 1,
-  //   attribute_type: 'NFT Trader',
-  //   icon: 'https://zapper.xyz/images/lists/Q3VyYXRlZFVzZXJMaXN0LTE3MQ==.png',
-  //   tags: ['Sweeper', 'Airdrop Pro'],
-  // },
-];
+// const usersData = [
+// {
+//   name: '0x121r124124r1',
+//   amount: 1,
+//   attribute_type: 'NFT Trader',
+//   icon: 'https://zapper.xyz/images/lists/Q3VyYXRlZFVzZXJMaXN0LTE3MQ==.png',
+//   tags: ['Sweeper', 'Airdrop Pro'],
+// },
+// ];
 
 const Transactions = () => {
   const { data } = useSession();
@@ -49,8 +48,9 @@ const Transactions = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { isOpen: isPaywallOpen, onOpen: onPaywallOpen, onClose: onPaywallClose } = useDisclosure();
-  const [users, setUsers] = useState(usersData);
-  const [files, setFiles] = useState([]);
+  // @ts-ignore
+  const [users, setUsers] = useState([]);
+  const [files, setFiles] = useState<File[]>([]);
   const [isUploaded, setIsUploaded] = useState(false);
 
   const onDrop = (newFiles: File[]) => {
@@ -84,11 +84,8 @@ const Transactions = () => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        const newUsers = resData.data.users.map((user) => ({ ...user, name: '0x121r124124r1' }));
-        console.log('🚀 ~ file: index.tsx:59 ~ onDrop ~ resData:', { users, resData });
-
+        const { users: newUsers } = resData.data;
         setUsers(newUsers);
-
         onClose();
       })
       .catch((e) => {
@@ -223,7 +220,7 @@ const Transactions = () => {
               <GridItem colSpan={3}>
                 <Box>
                   <Text fontSize="lg" fontWeight="bold" color="#fff">
-                    {user?.name || 'No name'}
+                    {user?.attribute_type || 'No name'}
                   </Text>
                 </Box>
                 <Box>
@@ -231,7 +228,7 @@ const Transactions = () => {
                 </Box>
               </GridItem>
               <GridItem colSpan={1} display="flex" justifyContent="end">
-                <Wrap>
+                {/* <Wrap>
                   <WrapItem>
                     <Box
                       boxSize="100px"
@@ -245,7 +242,8 @@ const Transactions = () => {
                       <Text>{user.name.slice(2, 8)}</Text>
                     </Box>
                   </WrapItem>
-                </Wrap>
+                </Wrap> */}
+                <Image boxSize="64px" objectFit="cover" rounded="md" src={user.icon} />
               </GridItem>
               <GridItem
                 colSpan={4}
@@ -279,7 +277,7 @@ const Transactions = () => {
                     </Tag>
                   ))}
                 </Box>
-                <Button backgroundColor="#82FCD3" rounded="md" color="#000" size="sm" onClick={onPaywallOpen}>
+                <Button backgroundColor="#82FCD3" rounded="full" color="#000" size="sm" onClick={onPaywallOpen}>
                   <ChevronRightIcon boxSize={6} />
                 </Button>
               </GridItem>

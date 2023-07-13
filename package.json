@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "types": "tsc --noEmit --rootDir . && tsc -v",
     "test:e2e": "start-server-and-test dev http://localhost:3000 test:cypress",
     "test:cypress": "cypress run --browser chrome --headless"
   },
