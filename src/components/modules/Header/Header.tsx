@@ -5,13 +5,16 @@ import {
   NavBar,
 } from 'components/elements';
 import { ConnectButton } from '../ConnectButton';
+import Link from 'next/link';
 
 const Header = () => {
   return (
     <Box borderBottom="1px" borderBottomColor="chakra-border-color">
       <Container maxW="container.xl" p={'10px'}>
         <Flex align="center" justify="space-between">
-          <MoralisLogo />
+          <Link href="/">
+            <MoralisLogo />
+          </Link>
           <NavBar />
           <HStack gap={'10px'}>
             <ConnectButton />

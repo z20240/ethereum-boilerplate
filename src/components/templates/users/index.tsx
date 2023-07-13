@@ -1,5 +1,6 @@
 /* eslint-disable no-inline-comments */
-import { Heading, Box } from '@chakra-ui/react';
+import { useState, useEffect, useRef } from 'react';
+import { Heading, Box, Flex } from '@chakra-ui/react';
 import { useEvmWalletTransactions } from '@moralisweb3/next';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -24,12 +25,21 @@ import {
   WrapItem,
   ModalCloseButton,
 } from '@chakra-ui/react';
-import { ChevronRightIcon } from '@chakra-ui/icons';
+import { CheckIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { useSession } from 'next-auth/react';
-import { useEffect, useRef } from 'react';
 import { useNetwork } from 'wagmi';
 import { Doughnut } from 'react-chartjs-2';
 import { toUpper } from 'ramda';
+
+const usersData = [
+  // {
+  //   name: '0x121r124124r1',
+  //   amount: 1,
+  //   attribute_type: 'NFT Trader',
+  //   icon: 'https://zapper.xyz/images/lists/Q3VyYXRlZFVzZXJMaXN0LTE3MQ==.png',
+  //   tags: ['Sweeper', 'Airdrop Pro'],
+  // },
+];
 
 const Transactions = () => {
   const { data } = useSession();
@@ -39,66 +49,59 @@ const Transactions = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { isOpen: isPaywallOpen, onOpen: onPaywallOpen, onClose: onPaywallClose } = useDisclosure();
+  const [users, setUsers] = useState(usersData);
+  const [files, setFiles] = useState([]);
+  const [isUploaded, setIsUploaded] = useState(false);
 
-  const onDrop = (files: File[]) => {
+  const onDrop = (newFiles: File[]) => {
     console.log('🚀 ~ file: Home.tsx:38 ~ onDrop ~ files:', files);
+    setFiles(newFiles);
+    setIsUploaded(true);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
     // Note how this callback is never invoked if drop occurs on the inner dropzone
     onDrop,
+    accept: {
+      'text/csv': [],
+    },
   });
   const { data: transactions } = useEvmWalletTransactions({
     address: data?.user?.address,
     chain: chain?.id,
   });
   const userTags = ['Sweeper', 'Airdrop Pro'];
-  const usersData = [
-    {
-      name: 'Conservative investor',
-      amount: 15,
-      avatar: 'https://bit.ly/dan-abramov',
-    },
-    {
-      name: 'Conservative investor',
-      amount: 15,
-      avatar: 'https://bit.ly/dan-abramov',
-    },
-    {
-      name: 'Conservative investor',
-      amount: 15,
-      avatar: 'https://bit.ly/dan-abramov',
-    },
-    {
-      name: 'Conservative investor',
-      amount: 15,
-      avatar: 'https://bit.ly/dan-abramov',
-    },
-    {
-      name: 'Conservative investor',
-      amount: 15,
-      avatar: 'https://bit.ly/dan-abramov',
-    },
-    {
-      name: 'Conservative investor',
-      amount: 15,
-      avatar: 'https://bit.ly/dan-abramov',
-    },
-    {
-      name: 'Conservative investor',
-      amount: 15,
-      avatar: 'https://bit.ly/dan-abramov',
-    },
-  ];
 
   useEffect(() => console.log('transactions: ', transactions), [transactions]);
 
+  const handleUsersImport = () => {
+    const formData = new FormData();
+    formData.append('csvfile', files[0]);
+
+    fetch('https://web3-wallet-dashboard-api-q67p7dk34q-uc.a.run.app/api/v1/wallets/csv/', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        const newUsers = resData.data.users.map((user) => ({ ...user, name: '0x121r124124r1' }));
+        console.log('🚀 ~ file: index.tsx:59 ~ onDrop ~ resData:', { users, resData });
+
+        setUsers(newUsers);
+
+        onClose();
+      })
+      .catch((e) => {
+        console.error('error', e);
+        /*發生錯誤時要做的事情*/
+      })
+      .finally(() => {
+        setIsUploaded(false);
+      });
+  };
+
   return (
     <>
-      {/* <Heading size="lg" marginBottom={6}>
-        Transactions
-      </Heading> */}
-
       <Box display="flex" flexDirection="row" alignItems="center">
         <div className="relative flex flex-row w-full mx-auto">
           <Input p="6" rounded="full" placeholder="-- Paste the wallet address here -- " />
@@ -137,7 +140,7 @@ const Transactions = () => {
 
       <Grid templateColumns="repeat(4, 1fr)" gap={1}>
         <GridItem colSpan={3} h="12">
-          <Text fontSize="xl">{`${usersData.length} Users`}</Text>
+          <Text fontSize="xl">{`${users.length} Users`}</Text>
         </GridItem>
       </Grid>
 
@@ -212,75 +215,83 @@ const Transactions = () => {
         <GridItem pl="2">{/* Chart */}</GridItem>
         <GridItem pl="2">{/* Chart */}</GridItem>
       </Grid>
-      <Grid templateColumns="repeat(3, 1fr)" gap={1} my="12" bg="#191C1F" p="4">
-        {usersData.map((user) => (
-          <Grid templateColumns="repeat(4, 1fr)" gap={1} mb="4" mr="4" bg="#282C30" p="4" rounded="lg" shadow="lg">
-            <GridItem colSpan={3}>
-              <Box>
-                <Text fontSize="lg" fontWeight="bold" color="#fff">
-                  {user.name}
-                </Text>
-              </Box>
-              <Box>
-                <Text color="#9EA5AB">{`${user.amount} accounts`}</Text>
-              </Box>
-            </GridItem>
-            <GridItem colSpan={1} display="flex" justifyContent="end">
-              <Wrap>
-                <WrapItem>
-                  <Box
-                    boxSize="100px"
-                    objectFit="cover"
-                    rounded="md"
-                    backgroundColor={`#6235D0`}
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                  >
-                    <Text>{user.name.slice(2, 8)}</Text>
-                  </Box>
-                </WrapItem>
-              </Wrap>
-            </GridItem>
-            <GridItem
-              colSpan={4}
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-              overflow="hidden"
-              pt="2"
-            >
-              <Box display="flex">
-                {userTags.map((tag) => (
-                  <Tag
-                    size="sm"
-                    key={tag}
-                    variant="outline"
-                    color="#fff"
-                    borderRadius="full"
-                    border="1px solid #82FCD3"
-                    display="flex"
-                    fontWeight="bold"
-                    px="4"
-                    py="1"
-                    mr="2"
-                    cursor="default"
-                    alignItems="center"
-                    style={{
-                      flex: '1 0 auto',
-                    }}
-                  >
-                    {toUpper(tag)}
-                  </Tag>
-                ))}
-              </Box>
-              <Button backgroundColor="#82FCD3" rounded="md" color="#000" size="sm">
-                <ChevronRightIcon boxSize={6} />
-              </Button>
-            </GridItem>
-          </Grid>
-        ))}
-      </Grid>
+
+      {users.length > 0 ? (
+        <Grid templateColumns="repeat(3, 1fr)" gap={1} my="12" bg="#191C1F" p="4">
+          {users.map((user) => (
+            <Grid templateColumns="repeat(4, 1fr)" gap={1} mb="4" mr="4" bg="#282C30" p="4" rounded="lg" shadow="lg">
+              <GridItem colSpan={3}>
+                <Box>
+                  <Text fontSize="lg" fontWeight="bold" color="#fff">
+                    {user?.name || 'No name'}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text color="#9EA5AB">{`${user.amount} accounts`}</Text>
+                </Box>
+              </GridItem>
+              <GridItem colSpan={1} display="flex" justifyContent="end">
+                <Wrap>
+                  <WrapItem>
+                    <Box
+                      boxSize="100px"
+                      objectFit="cover"
+                      rounded="md"
+                      backgroundColor={`#6235D0`}
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                    >
+                      <Text>{user.name.slice(2, 8)}</Text>
+                    </Box>
+                  </WrapItem>
+                </Wrap>
+              </GridItem>
+              <GridItem
+                colSpan={4}
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                overflow="hidden"
+                pt="2"
+              >
+                <Box display="flex">
+                  {userTags.map((tag) => (
+                    <Tag
+                      size="sm"
+                      key={tag}
+                      variant="outline"
+                      color="#fff"
+                      borderRadius="full"
+                      border="1px solid #82FCD3"
+                      display="flex"
+                      fontWeight="bold"
+                      px="4"
+                      py="1"
+                      mr="2"
+                      cursor="default"
+                      alignItems="center"
+                      style={{
+                        flex: '1 0 auto',
+                      }}
+                    >
+                      {toUpper(tag)}
+                    </Tag>
+                  ))}
+                </Box>
+                <Button backgroundColor="#82FCD3" rounded="md" color="#000" size="sm" onClick={onPaywallOpen}>
+                  <ChevronRightIcon boxSize={6} />
+                </Button>
+              </GridItem>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Flex bg="#191C1F" p="4" rounded="md">
+          <Text mx="auto">No Data</Text>
+        </Flex>
+      )}
+
       {/* NOTE: Import users */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -289,19 +300,26 @@ const Transactions = () => {
           <ModalCloseButton />
           <ModalBody>
             <Text fontSize="sm">Import from a CSV file</Text>
-            <Box>
-              <div
-                {...getRootProps({
-                  className:
-                    'dropzone flex justify-center items-center h-[140px] border border-2 border-dashed my-6 rounded-md cursor-pointer',
-                })}
-              >
-                <input {...getInputProps()} />
-                <p>
-                  <span>Drop .csv file here or click to upload</span>
-                </p>
-              </div>
-            </Box>
+            {isUploaded ? (
+              <Box display="flex" flexDirection="column" justifyContent="center" my="4">
+                <CheckIcon mx="auto" my="2" />
+                <Text mb="2">The file is uploaded</Text>
+              </Box>
+            ) : (
+              <Box display="flex" justifyContent="center">
+                <div
+                  {...getRootProps({
+                    className:
+                      'dropzone flex justify-center items-center w-full h-[140px] border border-2 border-dashed my-6 rounded-md cursor-pointer',
+                  })}
+                >
+                  <input {...getInputProps()} />
+                  <p>
+                    <span>Drop .csv file here or click to upload</span>
+                  </p>
+                </div>
+              </Box>
+            )}
             <Box display="flex" justifyContent="center">
               <Button
                 right="0"
@@ -314,6 +332,7 @@ const Transactions = () => {
                 p="1"
                 px="12"
                 zIndex={40}
+                onClick={handleUsersImport}
               >
                 Import Users
               </Button>
