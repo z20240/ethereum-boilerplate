@@ -1,4 +1,5 @@
 /* eslint-disable etc/no-commented-out-code */
+import { useState } from 'react';
 import {
   TableContainer,
   Table,
@@ -12,31 +13,30 @@ import {
   SimpleGrid,
   Box,
   Heading,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  useDisclosure,
+  Input,
+  Button,
+  Grid,
+  GridItem,
+  Wrap,
+  WrapItem,
+  Tag,
+  Text,
 } from '@chakra-ui/react';
-import { useDropzone } from 'react-dropzone';
 import { useEvmWalletTransactions } from '@moralisweb3/next';
-import { Input, Button, Grid, GridItem, Wrap, WrapItem, Tag, Text } from '@chakra-ui/react';
 // import { useSession } from 'next-auth/react';
-import { useState } from 'react';
 import { getEllipsisTxt } from 'utils/format';
 import { useNetwork } from 'wagmi';
 import { Bar, Line, Radar, Doughnut } from 'react-chartjs-2';
 import { toUpper } from 'ramda';
+import { useRouter } from 'next/router';
 
 const Home = () => {
   const hoverTrColor = useColorModeValue('gray.100', 'gray.700');
   const { chain } = useNetwork();
+  const router = useRouter();
 
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [address, setAddress] = useState('');
+
   const randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
   // const [transactions, setTransactions] = useState([]);
@@ -53,8 +53,6 @@ const Home = () => {
     // address: data?.user?.address,
     chain: chain?.id,
   });
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // useEffect(() => console.log('transactions: ', transactions), [transactions]);
 
@@ -74,7 +72,11 @@ const Home = () => {
     console.log('🚀 ~ file: Transactions.tsx:44 ~ handleSearchClick ~ wallet:', wallet);
   };
 
-  const labels = ['stable coin holder', 'erc-20 flipper', 'Early adopter', 'liquidity Farmer'];
+  const tags = ['stable coin holder', 'erc-20 flipper', 'Early adopter', 'liquidity Farmer'];
+
+  const handleUploadingUsersClick = () => {
+    router.push('/users');
+  };
 
   return (
     <>
@@ -116,21 +118,20 @@ const Home = () => {
             color="#000"
             fontWeight="bold"
             fontSize="xs"
-            onClick={onOpen}
+            onClick={handleUploadingUsersClick}
           >
             Uploading list of users
           </Button>
         </div>
       </Box>
-
       {/* NOTE: 大頭貼 */}
       <div>
         <Grid templateColumns="repeat(12, 1fr)" gap={1} my="12">
           <GridItem colSpan={10} h="24">
             <Grid
               templateAreas={`
-                  "nav main"
-                  "nav footer"`}
+                "nav main"
+                "nav footer"`}
               gridTemplateRows={'50px 1fr 30px'}
               gridTemplateColumns={'150px 1fr'}
               h="24"
@@ -162,7 +163,7 @@ const Home = () => {
               </GridItem>
               <GridItem area={'footer'}>
                 <Box display="flex" flexDirection="row">
-                  {labels.map((size) => (
+                  {tags.map((size) => (
                     <Tag
                       size="sm"
                       key={size}
@@ -205,7 +206,6 @@ const Home = () => {
           </GridItem>
         </Grid>
       </div>
-
       <div>
         <SimpleGrid columns={2} spacing={4}>
           <Box>
@@ -356,57 +356,6 @@ const Home = () => {
           NFTs
         </Heading>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent backgroundColor="#000" border="1px solid #82FCD3" rounded="2xl">
-          <ModalHeader fontWeight="bold">Import Users</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Text fontSize="sm">Import from a CSV file</Text>
-            <Box>
-              <div
-                {...getRootProps({
-                  className:
-                    'dropzone flex justify-center items-center h-[140px] border border-2 border-dashed my-6 rounded-md cursor-pointer',
-                })}
-              >
-                <input {...getInputProps()} />
-                <p>
-                  <span>Drop .csv file here or click to upload</span>
-                </p>
-              </div>
-            </Box>
-            <Box display="flex" justifyContent="center">
-              <Button
-                right="0"
-                colorScheme="purple"
-                bg="#6235D0"
-                rounded="full"
-                color="#fff"
-                fontSize="xs"
-                fontWeight="bold"
-                p="1"
-                px="12"
-                zIndex={40}
-              >
-                Import Users
-              </Button>
-            </Box>
-            <Box display="flex" justifyContent="center" my="4">
-              <Text fontSize="sm" textDecoration="underline" mb="6" color="#82FCD3">
-                Download the CSV template
-              </Text>
-            </Box>
-          </ModalBody>
-
-          {/* <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="ghost">Secondary Action</Button>
-          </ModalFooter> */}
-        </ModalContent>
-      </Modal>
     </>
   );
 };
