@@ -21,6 +21,7 @@ import {
   WrapItem,
   Tag,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { useEvmWalletTransactions } from '@moralisweb3/next';
 // import { useSession } from 'next-auth/react';
@@ -34,6 +35,7 @@ const Home = () => {
   const hoverTrColor = useColorModeValue('gray.100', 'gray.700');
   const { chain } = useNetwork();
   const router = useRouter();
+  const toast = useToast();
 
   const [address, setAddress] = useState('');
 
@@ -62,7 +64,13 @@ const Home = () => {
   };
 
   const handleSearchClick = async () => {
-    if (!wallet || !address) {
+    if (!wallet || !address || address.slice(0, 2) !== '0x') {
+      toast.closeAll();
+      toast({
+        description: 'The wallet address is invalid.',
+        position: 'top',
+        status: 'error',
+      });
       return;
     }
 
