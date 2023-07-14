@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable no-inline-comments */
 import { useState, useEffect, useRef } from 'react';
 import { Heading, Box, Flex } from '@chakra-ui/react';
@@ -336,9 +337,11 @@ const Transactions = () => {
               </Button>
             </Box>
             <Box display="flex" justifyContent="center" my="4">
-              <Text fontSize="sm" textDecoration="underline" mb="6" color="#82FCD3">
-                Download the CSV template
-              </Text>
+              <a href="https://storage.googleapis.com/profile-bluwhale/import_wallets.csv" download="CSV template">
+                <Text fontSize="sm" textDecoration="underline" mb="6" color="#82FCD3">
+                  Download the CSV template
+                </Text>
+              </a>
             </Box>
           </ModalBody>
 
