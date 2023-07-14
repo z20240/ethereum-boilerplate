@@ -98,6 +98,178 @@ const Transactions = () => {
       });
   };
 
+  const PricingLayout = () => (
+    <div className="container max-w-full mx-auto pb-16 px-6">
+      <div className="max-w-full md:max-w-6xl mx-auto my-12 md:px-8">
+        <div className="relative flex flex-col md:flex-row items-center justify-center">
+          <div
+            className="w-11/12 max-w-sm sm:w-3/5 lg:w-1/3 sm:my-5 my-8 relative z-0 rounded-lg shadow-lg md:-mr-4"
+            style={{ border: '1px solid #82FCD3' }}
+          >
+            <div className="bg-[#051523] text-black rounded-lg shadow-lg overflow-hidden" style={{ height: '32rem' }}>
+              <div className="block text-white text-left text-sm sm:text-md max-w-sm mx-auto mt-2 px-8 lg:px-6 pt-2">
+                <h1 className="text-lg text-[#68B4E3] font-medium pt-2 pb-2 text-center tracking-wide">Basic</h1>
+                <Divider />
+                <h2 className="text-sm text-center pb-6 lg:pb-6 md:pb-2 pt-4 md:pt-0 lg:pt-4">
+                  <span className="text-3xl mr-1">$59</span>
+                  <span>/month</span>
+                </h2>
+              </div>
+              <div className="flex flex-wrap px-6 text-white">
+                <ul>
+                  <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Premium research reports</span>
+                  </li>
+                  <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">250M+ labeled addresses across 10+ blockchains</span>
+                  </li>
+                  <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">
+                      Industry-leading analytics on tokens, NFT, DeFi, chains, and others
+                    </span>
+                  </li>
+                  <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Credit Score </span>
+                  </li>
+                </ul>
+              </div>
+              <Divider />
+              <div className="block flex items-center pt-3 md:pt-0 lg:pt-4 px-8  uppercase">
+                <button
+                  type="button"
+                  className="mt-3 text-sm font-semibold text-white
+                        w-full px-6 py-3 rounded block hover:bg-gray-700 bg-[#6235D0]"
+                >
+                  Buy Now
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            className="w-full max-w-md sm:w-2/3 lg:w-1/3 sm:my-5 my-8 relative z-10 bg-[#051523] rounded-lg shadow-lg"
+            style={{ height: '40rem', border: '1px solid #82FCD3' }}
+          >
+            <div
+              className="text-sm leading-none rounded-t-lg bg-gray-200 text-black font-semibold uppercase py-4 text-center tracking-wide"
+              style={{ backgroundColor: '#82FCD3' }}
+            >
+              BEST VALUE
+            </div>
+            <div className="block text-left text-sm sm:text-md max-w-sm mx-auto mt-2 text-white px-8 lg:px-6">
+              <h1 className="text-lg font-medium p-3 pb-2 text-center tracking-wide text-[#68B4E3]">Pro</h1>
+              <Divider />
+              <h2 className="text-sm text-center pb-6 pt-4">
+                <span className="text-3xl mr-4">$999</span>
+                <span>/month</span>
+              </h2>
+            </div>
+            <div className="flex px-6 justify-start sm:justify-start ">
+              <ul>
+                <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                  <CheckIcon color="#82FCD3" />
+                  <span className="text-sm ml-3">Premium research reports</span>
+                </li>
+                <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                  <CheckIcon color="#82FCD3" />
+                  <span className="text-sm ml-3">250M+ labeled addresses across 10+ blockchains</span>
+                </li>
+                <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                  <CheckIcon color="#82FCD3" />
+                  <span className="text-sm ml-3">
+                    Industry-leading analytics on tokens, NFT, DeFi, chains, and others
+                  </span>
+                </li>
+                <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                  <CheckIcon color="#82FCD3" />
+                  <span className="text-sm ml-3">Credit Score </span>
+                </li>
+                <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                  <CheckIcon color="#82FCD3" />
+                  <span className="text-sm ml-3">Premium research reports</span>
+                </li>
+                <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                  <CheckIcon color="#82FCD3" />
+                  <span className="text-sm ml-3">Daily wallet Valuation</span>
+                </li>
+              </ul>
+            </div>
+            <Divider />
+            <div className="block flex items-center pt-4 px-8 uppercase">
+              <button
+                type="button"
+                className="mt-3 text-sm font-semibold text-white
+                        w-full px-6 py-3 bg-secondary rounded block shadow-xl bg-[#6235D0] hover:bg-gray-700"
+              >
+                Buy Now
+              </button>
+            </div>
+          </div>
+          <div
+            className="w-11/12 max-w-sm sm:w-3/5 lg:w-1/3 sm:my-5 my-8 relative z-0 rounded-lg shadow-lg md:-ml-4"
+            style={{ border: '1px solid #82FCD3' }}
+          >
+            <div
+              className="bg-[#051523] text-white rounded-lg shadow-inner shadow-lg overflow-hidden"
+              style={{ height: '32rem' }}
+            >
+              <div className="block text-left text-sm sm:text-md max-w-sm mx-auto mt-2 text-white px-8 lg:px-6">
+                <h1 className="text-lg font-medium p-3 pb-2 text-center tracking-wide text-[#68B4E3]">Enterprise</h1>
+                <Divider />
+                <h2 className="text-sm text-center pb-6 md:pb-2 lg:pb-6 pt-4 md:pt-0 lg:pt-4">
+                  <span className="text-3xl mr-4">Contact Us</span>
+                  {/* <span>/月</span> */}
+                </h2>
+              </div>
+              <div className="flex flex-wrap px-6">
+                <ul className="pl-6">
+                  <li className="flex items-center pb-8 md:pb-6 lg:pb-8">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Premium research reports</span>
+                  </li>
+
+                  <li className="flex items-center pb-4 md:pb-3 lg:pb-6">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Credit Score</span>
+                  </li>
+                  <li className="flex items-center pb-4 md:pb-3 lg:pb-6">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Daily wallet Valuation</span>
+                  </li>
+                  <li className="flex items-center pb-4 md:pb-3 lg:pb-6">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Collection Insights</span>
+                  </li>
+                  <li className="flex items-center pb-4 md:pb-3 lg:pb-6">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Daily Wallet Scanning</span>
+                  </li>
+                  <li className="flex items-center md:pb-3">
+                    <CheckIcon color="#82FCD3" />
+                    <span className="text-sm ml-3">Wallet Discovery</span>
+                  </li>
+                </ul>
+              </div>
+              <Divider />
+              <div className="flex items-center pt-3 md:pt-2 lg:pt-0 md:pt-4 px-8 uppercase">
+                <button
+                  type="button"
+                  className="mt-6 text-sm font-semibold text-white
+                        w-full px-6 py-3 rounded block shadow-xl hover:bg-gray-700 bg-[#6235D0]"
+                >
+                  Contact Us
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <>
       <Box display="flex" flexDirection="row" alignItems="center">
@@ -354,19 +526,22 @@ const Transactions = () => {
         </ModalContent>
       </Modal>
       {/* NOTE: Paywall */}
-      <Modal isOpen={isPaywallOpen} onClose={onPaywallClose} size="xl">
+      <Modal isOpen={isPaywallOpen} onClose={onPaywallClose} size="full">
         <ModalOverlay />
         <ModalContent backgroundColor="#000" border="1px solid #82FCD3" rounded="2xl">
           <ModalHeader fontWeight="bold"></ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box display="flex" flexDirection="column" justifyContent="center">
-              <Heading mx="auto">Plans & Prices</Heading>
-              <Text mx="auto">Choose the best fitting plan and grow your brand & business today!</Text>
-              <Box>
-                <div>Paywall</div>
-                <div>Work In Progress ...</div>
-              </Box>
+              <Heading mx="auto" mb="4">
+                Plans & Prices
+              </Heading>
+              <Text mx="auto" style={{ letterSpacing: '0.05em' }}>
+                Choose the best fitting plan and grow your brand & business today!
+              </Text>
+              <Flex>
+                <PricingLayout />
+              </Flex>
             </Box>
           </ModalBody>
 
